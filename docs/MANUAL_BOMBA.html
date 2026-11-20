@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual de Desarme de Bomba</title>
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --card:#121212;
+    --accent:#ff3b3b;
+    --accent-dim:#4a1a1a;
+    --text:#e8e8e8;
+    --muted:#8a8a8a;
+    --border:#2a2a2a;
+    --led-red:#ff2222;
+    --led-green:#22ff22;
+    --led-yellow:#ffd700;
+    --led-orange:#ff8c00;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    padding:0;
+  }
+  .page{
+    max-width:900px;
+    margin:0 auto;
+    padding:24px;
+    background:var(--bg);
+    min-height:1100px;
+  }
+  header{
+    text-align:center;
+    padding:40px 0 20px;
+    border-bottom:2px solid var(--accent);
+    margin-bottom:30px;
+  }
+  header h1{
+    font-size:34px;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    color:var(--text);
+    margin-bottom:8px;
+  }
+  header .subtitle{
+    color:var(--muted);
+    font-size:14px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+  }
+  .badge{
+    display:inline-block;
+    margin-top:12px;
+    padding:6px 14px;
+    background:var(--accent-dim);
+    color:var(--accent);
+    border:1px solid var(--accent);
+    border-radius:4px;
+    font-size:12px;
+    letter-spacing:1px;
+  }
+  h2{
+    font-size:20px;
+    color:var(--accent);
+    margin:30px 0 14px;
+    padding-bottom:6px;
+    border-bottom:1px solid var(--border);
+    text-transform:uppercase;
+    letter-spacing:1px;
+  }
+  h3{font-size:16px;color:var(--text);margin:20px 0 8px;}
+  p{margin:0 0 12px;color:#c9c9c9;font-size:14px;}
+  ul{margin:0 0 16px 20px;color:#c9c9c9;}
+  li{margin-bottom:6px;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px;
+    margin:20px 0;
+  }
+  .card.danger{border-color:var(--accent-dim);}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:20px;
+    margin:20px 0;
+  }
+  .icon-box{
+    background:#0c0c0c;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:16px;
+    text-align:center;
+  }
+  .icon-box img{
+    width:80px;
+    height:80px;
+    object-fit:contain;
+    margin-bottom:12px;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .icon-box h4{font-size:13px;margin-bottom:6px;color:var(--text);}
+  .icon-box p{font-size:12px;color:var(--muted);margin:0;}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+  th,td{border:1px solid var(--border);padding:8px 10px;text-align:left;color:#c9c9c9;}
+  th{background:#161616;color:var(--accent);text-transform:uppercase;font-size:11px;letter-spacing:1px;}
+  tr:nth-child(even){background:#0f0f0f;}
+  .oled{
+    background:#000;
+    border:3px solid #222;
+    border-radius:6px;
+    padding:16px;
+    width:100%;
+    max-width:320px;
+    margin:16px auto;
+    box-shadow:0 0 20px rgba(0,255,0,0.15);
+  }
+  .oled-screen{
+    width:100%;
+    height:140px;
+    background:#050505;
+    border:1px solid #111;
+    color:#0f0;
+    font-family:'Courier New',monospace;
+    font-size:13px;
+    padding:10px;
+    overflow:hidden;
+    position:relative;
+  }
+  .oled-line{margin-bottom:6px;}
+  .led-dot{
+    width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:8px;box-shadow:0 0 8px currentColor;
+  }
+  .row{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0;}
+  .rule-box{
+    background:#101010;
+    border-left:3px solid var(--accent);
+    padding:12px 16px;
+    margin:16px 0;
+    font-size:13px;
+  }
+  .example{
+    background:#0f172a;
+    border:1px solid #1e293b;
+    border-radius:8px;
+    padding:18px;
+    margin:20px 0;
+  }
+  .example h4{color:#38bdf8;margin-bottom:10px;}
+  footer{
+    margin-top:40px;
+    padding-top:20px;
+    border-top:1px solid var(--border);
+    text-align:center;
+    font-size:11px;
+    color:var(--muted);
+  }
+  .serial-char{
+    display:inline-block;
+    width:1.2em;
+    text-align:center;
+    font-family:'Courier New',monospace;
+    font-weight:bold;
+  }
+  @media print{
+    body{background:#fff;color:#000;}
+    .card,.icon-box,.example{background:#fff;border-color:#ccc;}
+    .oled{background:#fff;border-color:#000;}
+    .oled-screen{background:#fff;color:#000;border:1px solid #000;}
+    .accent{color:#000;}
+    .icon-box img{filter:none;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <h1>&#128683; Manual de Desarme</h1>
+  <div class="subtitle">Simulador Eletrônico de Bomba &bull; ESP32 / Arduino Nano</div>
+  <div class="badge">Versão 2.0 &bull; Serial Aleatório Completo &bull; Imprima como PDF</div>
+</header>
+
+<h2>Visão Geral</h2>
+<p>Desarmar a bomba completando <b>todas as 6 etapas</b> antes que o timer de <b>5 minutos</b> chegue a zero. Você tem <b>3 strikes</b> (erros permitidos). Cada strike acelera o timer. Ao atingir 3 strikes ou zerar o tempo: <b>explosão</b>.</p>
+
+<h2>Componentes do Painel</h2>
+<div class="grid">
+  <div class="icon-box">
+    <img src="Icons/icon-Display.SVG" alt="Display OLED">
+    <h4>Display OLED</h4>
+    <p>Mostra timer, serial, etapa e dicas</p>
+  </div>
+  <div class="icon-box">
+    <img src="Icons/icon-Keypad.SVG" alt="Teclado 4x4">
+    <h4>Teclado 4x4</h4>
+    <p>0-9, A-D, *, #</p>
+  </div>
+  <div class="icon-box">
+    <img src="Icons/icon-Wires.SVG" alt="Fios de Corte">
+    <h4>5 Fios</h4>
+    <p>Corte o fio correto fisicamente</p>
+  </div>
+  <div class="icon-box">
+    <img src="Icons/icon-Toggles.SVG" alt="Chaves Toggle">
+    <h4>4 Chaves Toggle</h4>
+    <p>Posição binária (16 combinações)</p>
+  </div>
+  <div class="icon-box">
+    <img src="Icons/icon-Pot.SVG" alt="Potenciômetro">
+    <h4>Potenciômetro</h4>
+    <p>Sintonize a frequência correta</p>
+  </div>
+  <div class="icon-box">
+    <img src="Icons/icon-Button.SVG" alt="Botão Segurar">
+    <h4>Botão Segurar</h4>
+    <p>Segure e solte no dígito certo</p>
+  </div>
+  <div class="icon-box">
+    <img src="Icons/icon-Simon.SVG" alt="LEDs Simon">
+    <h4>LEDs Simon</h4>
+    <p>4 cores: Vermelho, Verde, Amarelo, Laranja</p>
+  </div>
+  <div class="icon-box">
+    <img src="Icons/icon-Strikes.SVG" alt="LEDs Strike">
+    <h4>LEDs Strike</h4>
+    <p>3 LEDs vermelhos indicam erros</p>
+  </div>
+  <div class="icon-box">
+    <img src="Icons/icon-Success.SVG" alt="LED Sucesso">
+    <h4>LED Sucesso</h4>
+    <p>Verde aceso ao desarmar</p>
+  </div>
+  <div class="icon-box">
+    <img src="Icons/icon-Buzzer.SVG" alt="Buzzer">
+    <h4>Buzzer Passivo</h4>
+    <p>Feedback sonoro e alarmes</p>
+  </div>
+</div>
+
+<h2>Regras Gerais</h2>
+<ul>
+  <li><b>Timer:</b> 5 minutos (contagem regressiva no display)</li>
+  <li><b>Strikes:</b> Máximo de 3 erros. Cada strike acelera a contagem.</li>
+  <li><b>Últimos 30 s:</b> O buzzer apita mais rápido como aviso crítico.</li>
+  <li><b>Vitória:</b> Melodia de sucesso + LED verde aceso + display fixo.</li>
+  <li><b>Derrota:</b> Alarme contínuo + display piscando + LEDs vermelhos.</li>
+</ul>
+
+<div class="rule-box card">
+  <strong>⚠️ Atenção:</strong> <b>Todas as etapas dependem do Número de Série</b> exibido no display. O Serial é gerado <b>100% aleatoriamente</b> a cada partida (4 caracteres: números, letras maiúsculas, minúsculas e símbolos). Consulte este manual durante a partida.
+</div>
+
+<h2>Número de Série (Âncora Universal)</h2>
+<div class="oled">
+  <div class="oled-screen">
+    <div class="oled-line">SERIAL: <span class="serial-char">K</span><span class="serial-char">9</span><span class="serial-char">#</span><span class="serial-char">m</span></div>
+    <div class="oled-line">TEMPO: 04:58</div>
+    <div class="oled-line">ETAPA: CORTE O FIO</div>
+    <div class="oled-line">Strikes: 0/3</div>
+  </div>
+</div>
+<p>Formato: <b>4 caracteres aleatórios</b> do conjunto completo ASCII imprimível (exemplo: <code>K9#m</code>, <code>7@B2</code>, <code>xZ$5</code>). Cada caractere é sorteado independentemente. O Serial é a <b>única fonte de verdade</b> para todas as regras dinâmicas.</p>
+
+<h2>Tabela de Referência de Caracteres do Serial</h2>
+<table>
+  <tr><th>Posição</th><th>Caractere</th><th>Valor ASCII</th><th>Uso Principal</th></tr>
+  <tr><td>1º (S[0])</td><td>Ex: <span class="serial-char">K</span></td><td>75</td><td>Senha D1, Fio base, Toggle base, Freq</td></tr>
+  <tr><td>2º (S[1])</td><td>Ex: <span class="serial-char">9</span></td><td>57</td><td>Senha D2, D4, Simon seed</td></tr>
+  <tr><td>3º (S[2])</td><td>Ex: <span class="serial-char">#</span></td><td>35</td><td>Senha D3, D5, Freq offset</td></tr>
+  <tr><td>4º (S[3])</td><td>Ex: <span class="serial-char">m</span></td><td>109</td><td>Senha D6, Fio alvo, Toggle modifier</td></tr>
+</table>
+
+<h2>Etapa 1 — Fios (Corte Físico)</h2>
+<p>Existem <b>5 fios</b>. Apenas <b>um</b> está correto. O fio alvo é determinado pelo <b>4º caractere do Serial (S[3])</b>.</p>
+<table>
+  <tr><th>Fio</th><th>Cor</th><th>Condição de Corte</th></tr>
+  <tr><td>1</td><td>Vermelho</td><td>S[3] ASCII par (ex: '0','2','4','6','8','B','D','F','H','J','L','N','P','R','T','V','X','Z','b','d','f','h','j','l','n','p','r','t','v','x','z')</td></tr>
+  <tr><td>2</td><td>Azul</td><td>S[3] ASCII ímpar (ex: '1','3','5','7','9','A','C','E','G','I','K','M','O','Q','S','U','W','Y','a','c','e','g','i','k','m','o','q','s','u','w','y')</td></tr>
+  <tr><td>3</td><td>Verde</td><td>S[3] é letra maiúscula (A-Z)</td></tr>
+  <tr><td>4</td><td>Amarelo</td><td>S[3] é letra minúscula (a-z)</td></tr>
+  <tr><td>5</td><td>Laranja</td><td>S[3] é dígito (0-9) ou símbolo (!@#$%^&*)</td></tr>
+</table>
+<div class="rule-box">
+  <strong>Dependência:</strong> A <b>cor do fio cortado</b> define o <b>2º dígito da senha</b> (Etapa 2).
+</div>
+
+<h2>Etapa 2 — Senha (6 Dígitos)</h2>
+<p>Digite 6 dígitos no teclado. <code>*</code> apaga, <code>#</code> confirma. Cada dígito deriva do Serial e do estado do jogo:</p>
+<table>
+  <tr><th>Posição</th><th>Regra de Geração</th><th>Fórmula / Lógica</th></tr>
+  <tr><td><b>D1</b></td><td>Baseado no 1º caractere (S[0])</td><td><code>(ASCII(S[0]) % 9) + 1</code> → resultado 1-9</td></tr>
+  <tr><td><b>D2</b></td><td>Baseado na <b>cor do fio cortado</b> (Etapa 1)</td><td>Vermelho=3, Azul=8, Verde=2, Amarelo=7, Laranja=4</td></tr>
+  <tr><td><b>D3</b></td><td>Baseado no 3º caractere (S[2])</td><td><code>(ASCII(S[2]) % 9) + 1</code> → resultado 1-9</td></tr>
+  <tr><td><b>D4</b></td><td>Baseado no 2º caractere (S[1]) + Strikes</td><td><code>((ASCII(S[1]) + Strikes*17) % 10)</code> → 0-9</td></tr>
+  <tr><td><b>D5</b></td><td>Baseado no 3º caractere (S[2])</td><td>Se ASCII par → 5, se ímpar → 3</td></tr>
+  <tr><td><b>D6</b></td><td>Baseado no <b>resultado do Simon</b> (Etapa 3)</td><td>Acertou sequência completa = 1, Errou = 0</td></tr>
+</table>
+<div class="rule-box">
+  <strong>Dependências cruzadas:</strong> D2 depende da Etapa 1 (fio cortado). D4 depende dos Strikes atuais. D6 depende da Etapa 3 (Simon).
+</div>
+
+<h2>Etapa 3 — Simon Says</h2>
+<p>Quatro LEDs piscam em sequência com tons diferentes. Repita usando as teclas:</p>
+<div class="row">
+  <div style="display:flex;align-items:center;gap:6px;">
+    <span class="led-dot" style="background:var(--led-red);box-shadow:0 0 10px var(--led-red);"></span>
+    <strong>Tecla A</strong> &mdash; Vermelho (Grave)
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;">
+    <span class="led-dot" style="background:var(--led-green);box-shadow:0 0 10px var(--led-green);"></span>
+    <strong>Tecla B</strong> &mdash; Verde (Médio-Grave)
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;">
+    <span class="led-dot" style="background:var(--led-yellow);box-shadow:0 0 10px var(--led-yellow);"></span>
+    <strong>Tecla C</strong> &mdash; Amarelo (Médio-Agudo)
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;">
+    <span class="led-dot" style="background:var(--led-orange);box-shadow:0 0 10px var(--led-orange);"></span>
+    <strong>Tecla D</strong> &mdash; Laranja (Agudo)
+  </div>
+</div>
+<p>Fluxo: o jogo exibe uma sequência → você repete → a cada acerto a sequência cresce. A <b>semente da sequência</b> é derivada de <code>ASCII(S[1]) XOR ASCII(S[3])</code>.</p>
+<p>Para completar, acerte <b>5 cores seguidas</strong>.</p>
+<div class="rule-box">
+  <strong>Dependência:</strong> O resultado (acerto/erro) define o <b>D6 da senha</b> (Etapa 2).
+</div>
+
+<h2>Etapa 4 — Sintonizar Frequência</h2>
+<p>Gire o potenciômetro até encontrar o tom alvo. Quanto mais perto, mais agudo e rápido o buzzer apita. O display mostra apenas uma dica vaga.</p>
+<p><b>Frequência alvo (Hz):</b> <code>440 + (ASCII(S[0]) % 12) * 50 + (ASCII(S[2]) % 8) * 10</code></p>
+<table>
+  <tr><th>Exemplo Serial</th><th>Frequência Alvo</th></tr>
+  <tr><td><code>K9#m</code> (75, 57, 35, 109)</td><td>440 + (75%12=3)*50 + (35%8=3)*10 = 440+150+30 = <b>620 Hz</b></td></tr>
+  <tr><td><code>7@B2</code> (55, 64, 66, 50)</td><td>440 + (55%12=7)*50 + (66%8=2)*10 = 440+350+20 = <b>810 Hz</b></td></tr>
+</table>
+
+<h2>Etapa 5 — Chaves Toggle (4 Chaves = 16 Combinações)</h2>
+<p>4 toggles geram <b>16 possibilidades</b> (binário <code>0000</code> a <code>1111</code>, decimal 0-15).</p>
+<ol>
+  <li><b>Base (4 bits):</b> <code>ASCII(S[0]) & 0x0F</code> (4 bits menos significativos do 1º caractere).</li>
+  <li><b>Modificador Fio (Etapa 1):</b> Se o <b>fio Azul (fio 2)</b> foi cortado → <code>XOR 0x0F</code> (inverte todos os 4 bits). Senão, mantém.</li>
+  <li><b>Modificador Strikes:</b> Se houver ≥1 strike → some <code>1</code> (com carry). Se 0 strikes → mantém.</li>
+  <li><b>Modificador Serial (S[3]):</b> Se <code>ASCII(S[3])</code> for primo → <code>XOR 0x0A</code> (inverte bits 1 e 3). Senão → mantém.</li>
+</ol>
+<div class="example">
+  <h4>Exemplo prático (Serial <code>K9#m</code>):</h4>
+  <p><b>Serial:</code> <code>K</code>(75), <code>9</code>(57), <code>#</code>(35), <code>m</code>(109)<br>
+  1. Base: <code>75 & 0x0F = 0x0B</code> = <code>1011</code> (decimal 11)<br>
+  2. Fio Azul cortado? → Sim → <code>1011 XOR 1111 = 0100</code> (decimal 4)<br>
+  3. Strikes = 1 → <code>0100 + 1 = 0101</code> (decimal 5)<br>
+  4. <code>109</code> não é primo → mantém <code>0101</code><br>
+  <strong>Chaves corretas:</strong> Desligado(0), Ligado(1), Desligado(0), Ligado(1) → <code>0101</code></p>
+</div>
+
+<h2>Etapa 6 — Segurar e Soltar</h2>
+<p>Segure o botão grande e solte quando o timer mostrar o dígito alvo.</p>
+<p>O dígito alvo é o <b>D4 da senha</b> (calculado na Etapa 2). Soltar cedo ou tarde = <b>1 Strike</b>.</p>
+
+<h2>Resumo das Dependências (Mapa Completo)</h2>
+<table>
+  <tr><th>Origem</th><th>Afeta</th><th>Como</th></tr>
+  <tr><td>Serial S[0]</td><td>Senha D1, Frequência base, Toggle base</td><td>ASCII direto / módulo</td></tr>
+  <tr><td>Serial S[1]</td><td>Senha D4, Simon seed</td><td>ASCII + strikes / XOR com S[3]</td></tr>
+  <tr><td>Serial S[2]</td><td>Senha D3, D5, Frequência offset</td><td>Paridade / módulo</td></tr>
+  <tr><td>Serial S[3]</td><td>Fio alvo, Senha D6 (via Simon), Toggle modifier</td><td>Paridade / tipo char / primalidade</td></tr>
+  <tr><td>Fio cortado (Etapa 1)</td><td>Senha D2</td><td>Cor → valor fixo</td></tr>
+  <tr><td>Strikes</td><td>Senha D4, Toggle modifier</td><td>Soma / carry</td></tr>
+  <tr><td>Simon resultado (Etapa 3)</td><td>Senha D6</td><td>Acertou=1 / Errou=0</td></tr>
+</table>
+
+<h2>Exemplo Completo de Partida</h2>
+<div class="example">
+  <h4>Serial sorteado: <code>K9#m</code></h4>
+  <ol>
+    <li><b>Fios:</b> S[3]=<code>m</code> (ASCII 109, ímpar, minúscula) → <b>Fio 2 (Azul)</b>. Corte o fio azul. → <b>D2 = 8</b>.</li>
+    <li><b>Senha:</b>
+      <ul>
+        <li>D1: <code>(75 % 9) + 1 = 4</code></li>
+        <li>D2: <b>8</b> (fio azul)</li>
+        <li>D3: <code>(35 % 9) + 1 = 9</code></li>
+        <li>D4: <code>((57 + 0*17) % 10) = 7</code> (strikes=0)</li>
+        <li>D5: S[2]=35 (ímpar) → <b>3</b></li>
+        <li>D6: Aguarda Simon</li>
+      </ul>
+      <b>Senha parcial:</b> <code>48973_</code>
+    </li>
+    <li><b>Simon:</b> Seed = <code>57 XOR 109 = 86</code>. Sequência gerada: <code>A-D-B-A-D</code>. Jogador acerta → <b>D6 = 1</b>.</li>
+    <li><b>Senha final:</b> <strong><code>489731</code></strong></li>
+    <li><b>Frequência:</b> <code>440 + (75%12=3)*50 + (35%8=3)*10 = 620 Hz</b>. Sintonize até o buzzer estabilizar.</li>
+    <li><b>Chaves:</b> Base <code>75&0xF=11 (1011)</code> → Fio Azul inverte <code>0100</code> → Strikes=0 mantém → S[3]=109 não primo → <b><code>0100</code> (decimal 4)</b> → Chaves: <code>0 1 0 0</code>.</li>
+    <li><b>Segurar e Soltar:</b> D4 = <b>7</b>. Segure o botão e solte quando o timer mostrar <b>7</b> nos segundos.</li>
+  </ol>
+  <p><strong>Resultado:</strong> Bomba desarmada. LED verde aceso. Vitória.</p>
+</div>
+
+<h2>Tabela de Referência Rápida</h2>
+<table>
+  <tr><th>Etapa</th><th>Entrada</th><th>Dica no Display</th><th>Saída Esperada</th></tr>
+  <tr><td>Fios</td><td>5 fios físicos</td><td>Regra baseada em S[3]</td><td>Cortar 1 fio correto</td></tr>
+  <tr><td>Senha</td><td>Teclado 0-9, *, #</td><td>“SENHA: \_\_\_\_\_\_”</td><td>6 dígitos dinâmicos</td></tr>
+  <tr><td>Simon</td><td>Teclas A, B, C, D</td><td>Piscada de LEDs</td><td>Repetir sequência (seed S[1]⊕S[3])</td></tr>
+  <tr><td>Frequência</td><td>Potenciômetro</td><td>Dica vaga no OLED</td><td>Ajustar até tom alvo (fórmula S[0],S[2])</td></tr>
+  <tr><td>Chaves</td><td>4 toggles</td><td>Número alvo (binário)</td><td>Posição <code>0000</code>-<code>1111</code></td></tr>
+  <tr><td>Segurar</td><td>Botão físico</td><td>Timer regressivo</td><td>Soltar no dígito = D4</td></tr>
+</table>
+
+<footer>
+  Projeto educativo de eletrônica. Sem explosivos reais. &bull; Imprima este arquivo como PDF (Ctrl+P → Salvar como PDF).
+</footer>
+
+</div>
+</body>
+</html>

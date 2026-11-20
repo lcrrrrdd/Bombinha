@@ -1,0 +1,76 @@
+name: CI - Compilação Firmware
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Arduino CLI
+        uses: arduino/setup-arduino-cli@v1
+        with:
+          version: 1.0.4
+
+      - name: Instalar core ESP32
+        run: |
+          arduino-cli core update-index --additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+          arduino-cli core install esp32:esp32
+
+      - name: Instalar bibliotecas necessárias
+        run: |
+          arduino-cli lib install "Adafruit SSD1306"
+          arduino-cli lib install "Adafruit GFX Library"
+          arduino-cli lib install "Keypad"
+          arduino-cli lib install "RTClib"
+
+      - name: Compilar Placa A (Cérebro)
+        run: |
+          arduino-cli compile --fqbn esp32:esp32:esp32 \
+            --build-property "build.partitions=default_4MB" \
+            firmware/placa_a_cerebro/placa_a_cerebro.ino
+
+      - name: Compilar Placa B (Painel)
+        run: |
+          arduino-cli compile --fqbn esp32:esp32:esp32 \
+            --build-property "build.partitions=default_4MB" \
+            firmware/placa_b_painel/placa_b_painel.ino
+
+      - name: Verificar tamanho do firmware
+        run: |
+          echo "=== Tamanho Placa A ==="
+          ls -lh firmware/placa_a_cerebro/*.bin 2>/dev/null || echo "Nenhum .bin gerado (esperado em CI sem hardware)"
+          echo "=== Tamanho Placa B ==="
+          ls -lh firmware/placa_b_painel/*.bin 2>/dev/null || echo "Nenhum .bin gerado"
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verificar formatação .ino/.cpp/.h
+        run: |
+          # Verifica se arquivos terminam com newline
+          find firmware -name "*.ino" -o -name "*.cpp" -o -name "*.h" | xargs -I{} sh -c 'tail -c1 "{}" | read _ || echo "{} não termina com newline"'
+      - name: Verificar .gitignore
+        run: |
+          test -f .gitignore && echo "OK: .gitignore presente"
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verificar manual existe
+        run: |
+          test -f docs/MANUAL_BOMBA.html && echo "OK: Manual HTML presente"
+      - name: Verificar ícones
+        run: |
+          count=$(ls icons/*.SVG | wc -l)
+          echo "Ícones encontrados: $count"
+          test "$count" -eq 10 && echo "OK: 10 ícones SVG"
