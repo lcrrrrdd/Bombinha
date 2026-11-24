@@ -1,0 +1,321 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Como Jogar Bombinha — Guia Passo a Passo</title>
+<style>
+  :root{
+    --bg:#0a0a0c;
+    --card:#16161e;
+    --accent:#ff2e42;
+    --accent-light:#ff6b6b;
+    --text:#f5f5f5;
+    --muted:#a0a0b0;
+    --border:#2a2a35;
+    --green:#00e676;
+    --red:#ff3344;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding:0;
+  }
+  .page{
+    max-width:900px;
+    margin:0 auto;
+    padding:30px 20px 60px;
+  }
+  header{text-align:center;padding:40px 0 30px;}
+  h1{font-size:36px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;color:var(--text);}
+  .subtitle{color:var(--muted);font-size:16px;}
+  .warning{
+    background:#1d0b0e;
+    border:2px solid var(--accent);
+    border-radius:12px;
+    padding:18px;
+    margin:25px 0;
+    text-align:center;
+  }
+  .warning b{color:var(--accent-light);}
+  h2{
+    font-size:22px;
+    color:var(--accent);
+    margin:36px 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--border);
+  }
+  h3{font-size:17px;color:var(--text);margin:22px 0 8px;}
+  p{margin:0 0 14px;color:#d5d5e0;font-size:15px;}
+  ul{margin:0 0 16px 24px;color:#d5d5e0;}
+  li{margin-bottom:10px;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:22px;
+    margin:20px 0;
+  }
+  .step-card{
+    background:var(--card);
+    border:2px solid var(--border);
+    border-radius:16px;
+    padding:24px;
+    margin:22px 0;
+  }
+  .step-number{
+    display:inline-block;
+    background:var(--accent);
+    color:#000;
+    font-weight:800;
+    font-size:15px;
+    padding:4px 14px;
+    border-radius:20px;
+    margin-bottom:12px;
+  }
+  .icon-row{
+    display:flex;
+    gap:14px;
+    margin:16px 0;
+    flex-wrap:wrap;
+  }
+  .icon-item{
+    background:#0e0e14;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px;
+    text-align:center;
+    min-width:130px;
+  }
+  .icon-item img{width:46px;height:46px;margin:0 auto 10px;display:block;}
+  .icon-item h4{font-size:13px;margin-bottom:4px;color:var(--text);}
+  .icon-item p{font-size:11.5px;color:var(--muted);margin:0;}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;background:#0e0e14;}
+  th,td{border:1px solid var(--border);padding:11px 13px;text-align:left;color:#d5d5e0;}
+  th{background:#16161e;color:var(--accent);text-transform:uppercase;font-size:11px;letter-spacing:1px;}
+  tr:nth-child(even){background:#121218;}
+  .formula{
+    background:#1a1a22;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:10px 14px;
+    font-family:'Courier New',monospace;
+    color:#64ffda;
+    margin:10px 0;
+    display:inline-block;
+  }
+  .check{color:var(--green);font-weight:bold;}
+  .alert{color:var(--red);font-weight:bold;}
+  footer{
+    margin-top:40px;
+    padding-top:20px;
+    border-top:1px solid var(--border);
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+  }
+  @media print{
+    body{background:#fff;color:#000;}
+    .card,.step-card,.icon-item{background:#fff;border-color:#999;color:#000;}
+    th{background:#eee;color:#000;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <h1>Como Jogar Bombinha</h1>
+  <div class="subtitle">Guia passo a passo para quem nunca jogou antes</div>
+</header>
+
+<div class="warning">
+  <b>Atenção:</strong> desarme a bomba antes que o tempo acabe. Você tem <b>5 minutos</b> e pode errar no máximo <b>3 vezes</strong>. Cada erro faz o tempo correr mais rápido.
+</div>
+
+<h2>O que tem no painel da bomba</h2>
+<p>São 10 peças. Cada uma tem um ícone para você não se perder:</p>
+<div class="icon-row">
+  <div class="icon-item">
+    <img src="icons/icon-Display.SVG" alt="Display OLED">
+    <h4>Tela (OLED)</h4>
+    <p>Mostra o tempo, o código secreto e em qual etapa você está</p>
+  </div>
+  <div class="icon-item">
+    <img src="icons/icon-Keypad.SVG" alt="Teclado numérico">
+    <h4>Teclado numérico</h4>
+    <p>Para digitar a senha de 6 números</p>
+  </div>
+  <div class="icon-item">
+    <img src="icons/icon-Wires.SVG" alt="Fios de corte">
+    <h4>5 fios de corte</h4>
+    <p>Só um fio é o certo. Corte o errado e leva um strike</p>
+  </div>
+  <div class="icon-item">
+    <img src="icons/icon-Toggles.SVG" alt="Chaves toggle">
+    <h4>4 chaves toggle</h4>
+    <p>Cada chave fica ligada ou desligada. São 16 combinações</p>
+  </div>
+  <div class="icon-item">
+    <img src="icons/icon-Pot.SVG" alt="Potenciômetro">
+    <h4>Potenciômetro</h4>
+    <p>Gire até encontrar o som certo da bomba</p>
+  </div>
+  <div class="icon-item">
+    <img src="icons/icon-Button.SVG" alt="Botão segurar">
+    <h4>Botão grande</h4>
+    <p>Aperte e solte na hora certa</p>
+  </div>
+  <div class="icon-item">
+    <img src="icons/icon-Simon.SVG" alt="LEDs Simon">
+    <h4>4 luzes Simon</h4>
+    <p>Repita a sequência de cores que pisca</p>
+  </div>
+  <div class="icon-item">
+    <img src="icons/icon-Strikes.SVG" alt="LEDs Strike">
+    <h4>3 luzes de erro</h4>
+    <p>Acendem vermelho toda vez que você erra algo</p>
+  </div>
+  <div class="icon-item">
+    <img src="icons/icon-Success.SVG" alt="LED Sucesso">
+    <h4>1 luz de vitória</h4>
+    <p>Acende verde quando você desarma a bomba</p>
+  </div>
+  <div class="icon-item">
+    <img src="icons/icon-Buzzer.SVG" alt="Buzzer">
+    <h4>Buzzer (som)</h4>
+    <p>Faz barulho para avisar se você está perto ou errou</p>
+  </div>
+</div>
+<h2>Antes de começar: leia o Código Secreto</h2>
+<p>Na tela da bomba aparece um <b>código secreto de 4 caracteres</b> (exemplo: <code>K9#m</code>). Cada caractere serve para uma etapa diferente. Anote os 4 caracteres antes de começar.</p>
+<table>
+  <tr><th>Posição</th><th>Nome neste guia</th><th>Serve para</th></tr>
+  <tr><td>1º caractere</td><td>Primeiro caractere</td><td>1º dígito da senha · chave base · frequência base</td></tr>
+  <tr><td>2º caractere</td><td>Segundo caractere</td><td>4º dígito da senha · semente do Simon</td></tr>
+  <tr><td>3º caractere</td><td>Terceiro caractere</td><td>3º e 5º dígitos da senha · frequência extra</td></tr>
+  <tr><td>4º caractere</td><td>Quarto caractere</td><td>Qual fio cortar · 6º dígito da senha (via Simon) · chave extra</td></tr>
+</table>
+
+<h2>Etapa 1 — Corte o fio certo</h2>
+<div class="step-card">
+  <div class="step-number">1 de 6</div>
+  <p>Olhe o <b>quarto caractere</b> do código secreto na tela. Corte apenas o fio indicado abaixo:</p>
+  <table>
+    <tr><th>Quarto caractere é…</th><th>Corte o fio</th></tr>
+    <tr><td>Número par (0, 2, 4, 6, 8)</td><td><span class="check">Vermelho (fio 1)</span></td></tr>
+    <tr><td>Número ímpar (1, 3, 5, 7, 9)</td><td><span class="check">Azul (fio 2)</span></td></tr>
+    <tr><td>Letra maiúscula (A até Z)</td><td><span class="check">Verde (fio 3)</span></td></tr>
+    <tr><td>Letra minúscula (a até z)</td><td><span class="check">Amarelo (fio 4)</span></td></tr>
+    <tr><td>Símbolo (! @ # $ % e outros)</td><td><span class="check">Laranja (fio 5)</span></td></tr>
+  </table>
+  <div class="card">
+    <p><b>Lembrete:</strong> a cor do fio que você cortou define o <b>2º número da sua senha</b> na Etapa 2:</p>
+    <table>
+      <tr><th>Fio cortado</th><th>2º número da senha</th></tr>
+      <tr><td>Vermelho</td><td>3</td></tr>
+      <tr><td>Azul</td><td>8</td></tr>
+      <tr><td>Verde</td><td>2</td></tr>
+      <tr><td>Amarelo</td><td>7</td></tr>
+      <tr><td>Laranja</td><td>4</td></tr>
+    </table>
+  </div>
+</div>
+<h2>Etapa 2 — Digite a senha de 6 números</h2>
+<div class="step-card">
+  <div class="step-number">2 de 6</div>
+  <p>Use o teclado numérico para digitar os 6 dígitos. Tecla <code>*</code> apaga o último, tecla <code>#</code> confirma.</p>
+  <p>Cada número da senha vem de um lugar diferente. O <b>6º dígito</b> fica em branco temporariamente — ele é definido só depois da Etapa 3 (Simon).</p>
+  <table>
+    <tr><th>Posição da senha</th><th>Como descobrir o número</th></tr>
+    <tr><td><b>1º número</b></td><td>Pegue o <b>primeiro caractere</b> do código secreto. Faça: <span class="formula">(valor % 9) + 1</span>. O resultado fica entre 1 e 9.</td></tr>
+    <tr><td><b>2º número</b></td><td>Depende do fio que você cortou na Etapa 1: Vermelho=3, Azul=8, Verde=2, Amarelo=7, Laranja=4</td></tr>
+    <tr><td><b>3º número</b></td><td>Pegue o <b>terceiro caractere</b> do código secreto. Faça: <span class="formula">(valor % 9) + 1</span>. Resultado entre 1 e 9.</td></tr>
+    <tr><td><b>4º número</b></td><td>Pegue o <b>segundo caractere</b> do código secreto + número de strikes atuais. Faça: <span class="formula">((valor + strikes×17) % 10)</span>. Resultado entre 0 e 9.</td></tr>
+    <tr><td><b>5º número</b></td><td>Pegue o <b>terceiro caractere</b> do código secreto. Se o valor for par → número é <b>5</b>. Se for ímpar → número é <b>3</b>.</td></tr>
+    <tr><td><b>6º número</b></td><td>Definido depois da Etapa 3 (Simon). Se você acertou o Simon → número é <b>1</b>. Se errou → número é <b>0</b>.</td></tr>
+  </table>
+  <div class="card">
+    <p><b>Atenção:</strong> o 2º número depende da Etapa 1, o 4º depende dos seus erros atuais (strikes), e o 6º depende da Etapa 3. Não pule etapas!</p>
+  </div>
+</div>
+<h2>Etapa 3 — Repita as luzes (Simon Says)</h2>
+<div class="step-card">
+  <div class="step-number">3 de 6</div>
+  <p>Quatro luzes piscam em uma ordem com sons diferentes. Você precisa repetir a mesma ordem usando as teclas:</p>
+  <div class="icon-row">
+    <div class="icon-item" style="min-width:110px;">
+      <img src="icons/icon-Simon.SVG" alt="Simon vermelho">
+      <h4>Tecla A</h4>
+      <p>Vermelho</p>
+    </div>
+    <div class="icon-item" style="min-width:110px;">
+      <img src="icons/icon-Simon.SVG" alt="Simon verde">
+      <h4>Tecla B</h4>
+      <p>Verde</p>
+    </div>
+    <div class="icon-item" style="min-width:110px;">
+      <img src="icons/icon-Simon.SVG" alt="Simon amarelo">
+      <h4>Tecla C</h4>
+      <p>Amarelo</p>
+    </div>
+    <div class="icon-item" style="min-width:110px;">
+      <img src="icons/icon-Simon.SVG" alt="Simon azul">
+      <h4>Tecla D</h4>
+      <p>Azul</p>
+    </div>
+  </div>
+  <p><b>Como jogar:</strong> a bomba mostra uma sequência (ex: Vermelho → Verde → Azul). Você aperta as teclas na mesma ordem. A cada acerto, a sequência fica maior. Você precisa acertar <b>5 cores seguidas</strong>.</p>
+  <div class="card">
+    <p><b>Lembrete:</strong> se você acertar tudo, o <b>6º número da senha</b> é <b>1</b>. Se errar, é <b>0</b>.</p>
+  </div>
+</div>
+<h2>Etapa 4 — Acerte o som com o potenciômetro</h2>
+<div class="step-card">
+  <div class="step-number">4 de 6</div>
+  <p>Gire o <b>potenciômetro</b> até o som da bomba ficar "estável" (o apito fica no tom certo). A tela dá uma dica vaga, mas você pode calcular o som exato:</p>
+  <div class="formula">Som alvo (Hz) = 440 + (1º caractere % 12) × 50 + (3º caractere % 8) × 10</div>
+  <table>
+    <tr><th>Código secreto</th><th>Som alvo aproximado</th></tr>
+    <tr><td><code>K9#m</code></td><td><b>620 Hz</b></td></tr>
+    <tr><td><code>7@B2</code></td><td><b>810 Hz</b></td></tr>
+    <tr><td><code>xZ$5</code></td><td><b>480 Hz</b></td></tr>
+  </table>
+  <p>Quanto mais perto você estiver do som certo, mais rápido e agudo o buzzer apita. Quando estabilizar, você passou de fase.</p>
+</div>
+
+<h2>Etapa 5 — Acerte as 4 chaves toggle</h2>
+<div class="step-card">
+  <div class="step-number">5 de 6</div>
+  <p>Existem 4 chaves (toggle). Cada uma pode ficar ligada ou desligada. Isso dá 16 combinações possíveis (de 0000 a 1111). Descubra a certa passo a passo:</p>
+  <ol>
+    <li><b>Comece com o 1º caractere</b> do código secreto. Pegue os 4 últimos bits dele (valor entre 0 e 15). Esse é seu ponto de partida.</li>
+    <li><b>Se você cortou o fio Azul</b> na Etapa 1, inverte todas as 4 chaves (0 vira 1, 1 vira 0). Se cortou outro fio, deixa como está.</li>
+    <li><b>Se você tem 1 ou mais strikes</b>, some 1 ao número. Se não tem strike, deixa como está.</li>
+    <li><b>Se o 4º caractere for número primo</b> (2, 3, 5, 7, 11...), inverte as chaves 1 e 3. Se não for primo, deixa como está.</li>
+  </ol>
+  <div class="card">
+    <p><b>Exemplo rápido:</strong> se o 1º caractere é <code>K</code> (valor 75), os 4 bits finais são <code>1011</code>. Se não cortou o fio Azul, não tem strikes e o 4º caractere é primo, você inverte bits 1 e 3, resultando em <code>0001</code> (chaves: Desligado, Desligado, Desligado, Ligado).</p>
+  </div>
+</div>
+<h2>Etapa 6 — Segure e solte o botão grande</h2>
+<div class="step-card">
+  <div class="step-number">6 de 6</div>
+  <p>Aperte o botão grande e segure. Solte exatamente quando o timer mostrar o <b>4º número da sua senha</b> (aquele que você descobriu na Etapa 2).</p>
+  <ul>
+    <li>Soltou cedo demais? → <span class="alert">1 strike</span></li>
+    <li>Soltou tarde demais? → <span class="alert">1 strike</span></li>
+    <li>Solte no número certo → <span class="check">Bomba desarmada!</span></li>
+  </ul>
+</div>
+
+<footer>
+  Guia passo a passo para iniciantes &bull; Bombinha v2.0 &bull; Projeto educativo de eletrônica. Sem explosivos reais.
+</footer>
+
+</div>
+</body>
+</html>
